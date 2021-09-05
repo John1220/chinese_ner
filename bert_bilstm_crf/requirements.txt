@@ -1,0 +1,4 @@
+numpy==1.17.0
+tensorflow==1.13.1
+six==1.12.0
+bert_base==0.0.9
