@@ -299,6 +299,7 @@ class BatchManager(object):
         chars = []
         segs = []
         targets = []
+        seq_len_list = []
         max_length = max([len(sentence[0]) for sentence in data])
         for line in data:
             string, char, seg, target = line
@@ -307,7 +308,8 @@ class BatchManager(object):
             chars.append(char + padding)
             segs.append(seg + padding)
             targets.append(target + padding)
-        return [strings, chars, segs, targets]
+            seq_len_list.append(len(string))
+        return [strings, chars, segs, targets, seq_len_list]
 
     def iter_batch(self, shuffle=False):
         if shuffle:

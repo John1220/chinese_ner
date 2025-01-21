@@ -15,6 +15,9 @@ from utils import get_logger, make_path, clean, create_model, save_model
 from utils import print_config, save_config, load_config, test_ner
 from data_utils import load_word2vec, create_input, input_from_line, BatchManager
 
+# 过滤警告
+tf.logging.set_verbosity(tf.logging.ERROR)
+
 flags = tf.app.flags
 flags.DEFINE_boolean("clean", False, "clean train folder")
 flags.DEFINE_boolean("train", False, "Wither train the model")
@@ -34,7 +37,7 @@ flags.DEFINE_boolean("pre_emb", True, "Wither use pre-trained embedding")
 flags.DEFINE_boolean("zeros", False, "Wither replace digits with zero")
 flags.DEFINE_boolean("lower", True, "Wither lower case")
 
-flags.DEFINE_integer("max_epoch", 100, "maximum training epochs")
+flags.DEFINE_integer("max_epoch", 5, "maximum training epochs")
 flags.DEFINE_integer("steps_check", 100, "steps per checkpoint")
 flags.DEFINE_string("ckpt_path", "ckpt", "Path to save model")
 flags.DEFINE_string("summary_path", "summary", "Path to store summaries")
@@ -146,7 +149,7 @@ def train():
         test_sentences, char_to_id, tag_to_id, FLAGS.lower
     )
     print("%i / %i / %i sentences in train / dev / test." % (
-        len(train_data), 0, len(test_data)))
+        len(train_data), len(dev_data), len(test_data)))
 
     train_manager = BatchManager(train_data, FLAGS.batch_size)
     dev_manager = BatchManager(dev_data, 100)
@@ -216,8 +219,8 @@ def main(_):
     """
     debug 测试
     """
-    # FLAGS.train = True
-    # FLAGS.clean = True
+    FLAGS.train = True
+    FLAGS.clean = True
     #
     if FLAGS.train:
         if FLAGS.clean:
@@ -228,5 +231,5 @@ def main(_):
 
 
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+    # os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     tf.app.run(main)
