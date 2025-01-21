@@ -317,7 +317,8 @@ class Model(object):
 
     def evaluate_line(self, sess, inputs, id_to_tag):
         trans = self.trans.eval()
-        lengths, scores = self.run_step(sess, False, inputs)
+        lengths = inputs[-1]
+        scores = self.run_step(sess, False, inputs)
         # batch_paths = self.decode(scores, lengths, trans)
         batch_paths = []
         for logit, seq_len in zip(scores, lengths):

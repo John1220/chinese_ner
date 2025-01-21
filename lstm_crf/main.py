@@ -37,7 +37,7 @@ flags.DEFINE_boolean("pre_emb", True, "Wither use pre-trained embedding")
 flags.DEFINE_boolean("zeros", False, "Wither replace digits with zero")
 flags.DEFINE_boolean("lower", True, "Wither lower case")
 
-flags.DEFINE_integer("max_epoch", 5, "maximum training epochs")
+flags.DEFINE_integer("max_epoch", 1, "maximum training epochs")
 flags.DEFINE_integer("steps_check", 100, "steps per checkpoint")
 flags.DEFINE_string("ckpt_path", "ckpt", "Path to save model")
 flags.DEFINE_string("summary_path", "summary", "Path to store summaries")
@@ -175,7 +175,7 @@ def train():
         model = create_model(sess, Model, FLAGS.ckpt_path, load_word2vec, config, id_to_char, logger)
         logger.info("start training")
         loss = []
-        for i in range(100):
+        for i in range(FLAGS.max_epoch):
             for batch in train_manager.iter_batch(shuffle=True):
                 step, batch_loss = model.run_step(sess, True, batch)
                 loss.append(batch_loss)
@@ -211,6 +211,7 @@ def evaluate_line():
             #     logger.info(e)
 
             line = input("请输入测试句子:")
+            # line = "张伟昨天在北京遇到了李娜和王小明，他们讨论了最近的项目进展。"
             result = model.evaluate_line(sess, input_from_line(line, char_to_id), id_to_tag)
             print(result)
 
@@ -219,7 +220,7 @@ def main(_):
     """
     debug 测试
     """
-    FLAGS.train = True
+    FLAGS.train = False
     FLAGS.clean = True
     #
     if FLAGS.train:
