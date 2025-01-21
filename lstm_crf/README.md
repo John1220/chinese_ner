@@ -8,8 +8,8 @@ This repository contains a simple demo for chainese named entity recognition.
 
 
 ## Requirements
-- [Tensorflow=1.2.0](https://github.com/tensorflow/tensorflow)
-- [jieba=0.37](https://github.com/fxsjy/jieba)
+- [Tensorflow=1.15](https://github.com/tensorflow/tensorflow)
+- [jieba](https://github.com/fxsjy/jieba)
 
 
 ## Model
